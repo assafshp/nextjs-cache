@@ -1,4 +1,8 @@
 import { ClientSideContent } from './components/ClientSideContent';
+import { headers } from 'next/headers';
+
+// Explicitly disable static caching
+export const dynamic = 'force-dynamic';
 
 interface PageData {
   buildTime: string;
@@ -38,6 +42,9 @@ export default async function HomePage() {
           <p className="text-lg">{pageData.buildTime}</p>
           <p className="text-sm text-gray-600 mt-2">
             This timestamp is cached and only updates when the cache is invalidated
+          </p>
+          <p className="text-sm text-gray-600 mt-1">
+            Cache Key: {cacheKey}, Cache Hit: {data ? 'Yes' : 'No'}
           </p>
         </div>
 

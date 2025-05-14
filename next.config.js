@@ -10,12 +10,10 @@ const nextConfig = {
   generateBuildId: async () => {
     return 'build-' + Date.now();
   },
-  // Configure caching behavior
-  staticPageGenerationTimeout: 120,
-  onDemandEntries: {
-    maxInactiveAge: 60 * 60 * 1000, // 1 hour
-    pagesBufferLength: 5,
-  }
+  // Disable automatic static optimization
+  staticPageGenerationTimeout: 0,
+  // Don't cache pages by default
+  unstable_cachePages: false
 }
 
 module.exports = nextConfig
