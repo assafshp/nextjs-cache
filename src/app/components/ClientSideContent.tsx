@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 export function ClientSideContent() {
   const [time, setTime] = useState('');
   const [isInvalidating, setIsInvalidating] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   
   useEffect(() => {
     // Initial set on mount to avoid hydration mismatch
@@ -19,13 +20,34 @@ export function ClientSideContent() {
 
   const handleInvalidateCache = async () => {
     setIsInvalidating(true);
+    setError(null);
+    
     try {
-      await fetch('/api/invalidate', { method: 'POST' });
+      const response = await fetch('/api/invalidate', { 
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to invalidate cache');
+      }
+
+      if (!data.success) {
+        throw new Error('Cache invalidation failed');
+      }
+
+      // Only reload if invalidation was successful
       window.location.reload();
     } catch (error) {
       console.error('Failed to invalidate cache:', error);
+      setError(error instanceof Error ? error.message : 'Failed to invalidate cache');
+    } finally {
+      setIsInvalidating(false);
     }
-    setIsInvalidating(false);
   };
 
   return (
@@ -47,6 +69,9 @@ export function ClientSideContent() {
         >
           {isInvalidating ? 'Invalidating...' : 'Invalidate Cache'}
         </button>
+        {error && (
+          <p className="mt-2 text-red-600">Error: {error}</p>
+        )}
         <p className="text-sm text-gray-600 mt-4">
           Click this button to invalidate the cache and get a fresh cached timestamp
         </p>
