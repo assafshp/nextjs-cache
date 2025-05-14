@@ -1,8 +1,10 @@
 const fs = require('fs').promises;
 const path = require('path');
 const crypto = require('crypto');
+const os = require('os');
 
-const CACHE_DIR = path.join(process.cwd(), '.next/cache/html');
+// Use system temp directory instead of .next/cache
+const CACHE_DIR = path.join(os.tmpdir(), 'app-cache');
 
 class DiskCache {
   constructor() {
@@ -31,7 +33,8 @@ class DiskCache {
       });
       await fs.writeFile(filePath, content, 'utf8');
       return true;
-    } catch {
+    } catch (error) {
+      console.error('Cache write error:', error);
       return false;
     }
   }
