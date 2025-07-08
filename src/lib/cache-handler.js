@@ -1,7 +1,7 @@
-const fs = require('fs').promises;
-const path = require('path');
-const crypto = require('crypto');
-const os = require('os');
+import { promises as fs } from 'fs';
+import path from 'path';
+import crypto from 'crypto';
+import os from 'os';
 
 // Use system temp directory instead of .next/cache
 const CACHE_DIR = path.join(os.tmpdir(), 'app-cache');
@@ -45,4 +45,5 @@ class DiskCache {
   }
 }
 
-module.exports = new DiskCache();
+const diskCache = new DiskCache();
+export default diskCache;

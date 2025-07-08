@@ -1,5 +1,6 @@
 import { ClientSideContent } from './components/ClientSideContent';
 import { headers } from 'next/headers';
+import cache from '../lib/cache-handler';
 
 // Explicitly disable static caching
 export const dynamic = 'force-dynamic';
@@ -17,7 +18,6 @@ function generatePageData(): PageData {
 }
 
 export default async function HomePage() {
-  const cache = require('../lib/cache-handler');
   const cacheKey = 'homepage';
   
   // Try to get from cache
