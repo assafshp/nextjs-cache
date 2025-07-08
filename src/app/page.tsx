@@ -34,7 +34,7 @@ export default async function HomePage() {
   
   return (
     <div className="p-8">
-      <h1 className="text-3xl font-bold mb-8">Next.js Cache Demonstration</h1>
+      <h1 className="text-3xl font-bold mb-8">assaf Next.js Cache Demonstration</h1>
       
       <div className="space-y-8">
         <div className="bg-blue-50 p-6 rounded-lg">
