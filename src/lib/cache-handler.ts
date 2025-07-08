@@ -6,14 +6,13 @@ import os from 'os';
 // Use system temp directory instead of .next/cache
 const CACHE_DIR = path.join(os.tmpdir(), 'app-cache');
 
-interface CacheValue {
-  value: any;
+interface CacheValue<T = unknown> {
+  value: T;
   lastModified: number;
 }
 
 interface CacheOptions {
   ttl?: number;
-  [key: string]: any;
 }
 
 class DiskCache {
@@ -22,7 +21,7 @@ class DiskCache {
     fs.mkdir(CACHE_DIR, { recursive: true }).catch(() => {});
   }
 
-  async get(key: string): Promise<CacheValue | null> {
+  async get<T = unknown>(key: string): Promise<CacheValue<T> | null> {
     try {
       const filePath = this.getFilePath(key);
       const content = await fs.readFile(filePath, 'utf8');
@@ -33,7 +32,7 @@ class DiskCache {
     }
   }
 
-  async set(key: string, value: any, options: CacheOptions = {}): Promise<boolean> {
+  async set<T = unknown>(key: string, value: T, options: CacheOptions = {}): Promise<boolean> {
     try {
       const filePath = this.getFilePath(key);
       const content = JSON.stringify({
