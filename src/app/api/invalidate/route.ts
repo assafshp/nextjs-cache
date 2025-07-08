@@ -1,12 +1,13 @@
 import { NextResponse } from 'next/server';
+import cache from '../../../lib/cache-handler';
+import os from 'os';
 
 export async function POST() {
   try {
-    const cache = require('../../../lib/cache-handler');
     
     // Add debug logging
     console.log('Cache invalidation requested');
-    console.log('Cache directory:', require('os').tmpdir());
+    console.log('Cache directory:', os.tmpdir());
     
     // Attempt to clear cache
     const result = await cache.set('homepage', null);
